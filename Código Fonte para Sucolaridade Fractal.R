@@ -1,46 +1,46 @@
-#Código para o cálculo da sucolaridade fractal de imagens topográficas de AFM criado pelo Prof. Me. Erveton Pinheiro Pinto, Universidade Federal do Amapá, Departamento de Física, Amapá, Brazil.
+#Code for calculating fractal succularity of AFM topographic images created by Prof. Dr. Erveton Pinheiro Pinto, Federal University of AmapÃ¡, Department of Physics, AmapÃ¡, Brazil.
 
-#Passo 1: criar uma variável que contenha a matriz de alturas a partir do diretório específico.
+#Step 1: create a variable that contains the array of heights from the specific directory.
 
 image1<-read.table (file = "sample.txt")
 
 
-RMS <- apply (X = image1[3], MARGIN = 2, FUN = sd) # obter RMS (método usual)
+RMS <- apply (X = image1[3], MARGIN = 2, FUN = sd) # get RMS (usual method)
 RMS
 
-#Passo 2: limiar.
+#Step 2: threshold.
 
 limiar<-Threshold
 
-#Transformar os valores de alturas em dados binários, com valores acima ou iguais a média chamados de 1 (inacessíveis pela água) e abaixo da média chamados de 0 (acessíveis pela água).
+#Transform height values into binary data, with values above or equal to the mean called 1 (inaccessible by water) and below the mean called 0 (accessible by water).
 
 z<-ifelse (image1[3] >= limiar, "1","0")
 
-#Criar uma matriz binária com a variável z.
+#Create a binary matrix with the variable z.
 
 mat<-matrix (z, nrow = 256, ncol = 256, byrow = TRUE)
 
-#Criar os valores correspondentes ao centroinde de pressão para cada pixel.
+#Create the values corresponding to the pressure centroid for each pixel.
 
 n<-c (1:256)
 pr<- 0.5+(n-1)
 
-#Contar o número de pontos de acesso para água em cada linha da matriz binária.
+#Count the number of water access points in each row of the binary matrix.
 
 x<-c(0)
 for(i in 1:nrow (mat)){
   v = mat[i,]
   x[i] = sum (v==0) }
 
-#Criar o numerador da equação da sucolaridade fractal.
+#Create the numerator of the fractal sucularity equation.
 
 numerador<-sum (pr*x)
 
-#Criar o denominador da equação da sucolaridade fractal.
+#Create the denominator of the fractal succularity equation.
 
 denominador<-256 * sum (pr)
 
-#Cálcular a sucolaridade fractal.
+#Calculate fractal succularity.
 
 Sucolaridade<-numerador/denominador
 print(Sucolaridade)
